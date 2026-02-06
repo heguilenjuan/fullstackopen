@@ -1,29 +1,44 @@
-import Header from './Header'
-import Content from './Content'
-import Total from './Total'
-
+import { useState } from "react";
+import Button from "./Button";
+import Statistic from "./Statistic";
 const App = () => {
- const course = 'Half Stack application development'
-  const parts = [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  let total = good + neutral + bad;
+
+  const handleGood = () => {
+    setGood(good + 1)
+  }
+  const handleNeutral = () =>{
+    setNeutral(neutral + 1)
+  }
+
+  const handleBad = () => {
+    setBad(bad + 1)
+  }
+  const calculateAvergate = () => {
+    if(good === 0) return -1
+    let sumary = good - bad;
+    return sumary/total
+  }
+
+  const percentPositive = () => {
+    if(good === 0) return 0
+    return (good/total)*100 + "%"
+  }
+  
   return (
-    <>
-      <Header course={course}/>
-      <Content parts={parts} />
-      <Total parts={parts} />
-    </>
+    <div>
+      <h3>give feedback</h3>
+      <Button name={"good"} onClick={handleGood}/>
+      <Button name={"neutral"} onClick={handleNeutral}/>
+      <Button name={"bad"} onClick={handleBad}/>
+      <h3>statistics</h3>
+      <Statistic good={good} neutral={neutral} bad={bad} total={total} 
+      Average={calculateAvergate()} Positive={percentPositive()} />
+    </div>
   )
 }
 
